@@ -1,0 +1,6 @@
+.search-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 20px; align-items: end; background: var(--white); padding: 36px; border-top: 4px solid var(--red); }
+.search-field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #888; margin-bottom: 7px; }
+.search-field select { width: 100%; padding: 12px 14px; font-family: var(--font-body); font-size: 14px; color: var(--black); background: #fafafa; border: 1px solid #e0e0e0; border-radius: 1px; outline: none; transition: border-color .2s; }
+.search-field select:focus { border-color: var(--red); background: var(--white); }
+.search-btn { height: 46px; white-space: nowrap; }
+@media (max-width: 768px) { .search-form { grid-template-columns: 1fr; } }

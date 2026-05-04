@@ -63,13 +63,63 @@ Le site est accessible sur `http://localhost:3000`
 - Identifiants par défaut (dev) : `admin` / `capauto2025`
 - **⚠️ Changer le mot de passe dans `.env.local` en production**
 
-## 🐳 Déploiement Docker
+## 🐳 Déploiement Docker (Production)
+
+### Prérequis
+- Docker & Docker Compose installés sur le VPS
+- Traefik v3.1 configuré avec le réseau `audit-app_web`
+- Resolver SSL `letsencrypt` actif
+
+### 1. Configurer les variables d'environnement
+
+```bash
+cp .env.example .env.local
+```
+
+Éditer `.env.local` :
+```env
+NEXTAUTH_URL=https://capauto.alsek.fr
+NEXTAUTH_SECRET=<générer avec: openssl rand -base64 32>
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=<mot_de_passe_sécurisé>
+```
+
+### 2. Lancer le conteneur
 
 ```bash
 docker compose up -d --build
 ```
 
 Le site sera accessible sur `https://capauto.alsek.fr` via Traefik.
+
+### 3. Volumes persistants
+
+| Volume | Usage |
+|---|---|
+| `capauto_data` | Base de données SQLite |
+| `capauto_uploads` | Photos des véhicules uploadées |
+
+### 4. Commandes utiles
+
+```bash
+# Voir les logs
+docker logs -f capauto
+
+# Reconstruire après une mise à jour
+docker compose up -d --build --force-recreate
+
+# Réinitialiser la base de données (⚠️ supprime tout)
+docker exec capauto rm /app/data/capauto.db
+docker compose restart capauto
+```
+
+### Architecture réseau
+
+```
+Internet → Traefik (443) → capauto:3000
+                ↓
+         audit-app_web (réseau Docker externe)
+```
 
 ## 📁 Arborescence
 

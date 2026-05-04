@@ -1,0 +1,28 @@
+.vehicle-card {
+  background: var(--white); border-radius: 2px; overflow: hidden;
+  border: 1px solid #e8e8e8; transition: box-shadow .25s, transform .2s;
+}
+.vehicle-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.12); transform: translateY(-3px); }
+.vehicle-img-wrap { position: relative; height: 220px; overflow: hidden; background: #f0f0f0; }
+.vehicle-img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.vehicle-card:hover .vehicle-img { transform: scale(1.05); }
+.vehicle-badges { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; }
+.badge-year, .badge-fuel {
+  font-family: var(--font-body); font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 2px; letter-spacing: .5px;
+}
+.badge-year { background: var(--red); color: var(--white); }
+.badge-fuel { background: rgba(0,0,0,.7); color: var(--white); }
+.vehicle-info { padding: 20px; }
+.vehicle-name {
+  font-family: var(--font-title); font-size: 20px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px; color: var(--black);
+  margin-bottom: 8px; line-height: 1.2;
+}
+.vehicle-specs { font-size: 13px; color: #777; display: flex; gap: 8px; margin-bottom: 12px; }
+.vehicle-price {
+  font-family: var(--font-title); font-size: 26px; font-weight: 700;
+  color: var(--red); margin-bottom: 16px;
+}
+.vehicle-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-sm { padding: 10px 18px; font-size: 11px; }

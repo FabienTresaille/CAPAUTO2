@@ -1,0 +1,27 @@
+#hero { position: relative; height: 100vh; min-height: 600px; overflow: hidden; margin-top: 72px; }
+.slide { position: absolute; inset: 0; opacity: 0; transition: opacity .9s ease; display: flex; align-items: center; }
+.slide.active { opacity: 1; z-index: 1; }
+.slide-bg-layer { position: absolute; inset: 0; background-size: cover; background-position: center; transform: scale(1.05); transition: transform 8s ease; }
+.slide.active .slide-bg-layer { transform: scale(1); }
+.slide-bg-1 .slide-bg-layer { background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 40%, #2a0808 100%); background-image: url('https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1600&auto=format&fit=crop&q=80'), linear-gradient(135deg,#111,#2a0808); background-blend-mode: overlay; }
+.slide-bg-2 .slide-bg-layer { background-image: url('https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=1600&auto=format&fit=crop&q=80'), linear-gradient(135deg,#111,#2a0808); background-blend-mode: overlay; background-size: cover; background-position: center; }
+.slide-bg-3 .slide-bg-layer { background-image: url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1600&auto=format&fit=crop&q=80'), linear-gradient(135deg,#111,#2a0808); background-blend-mode: overlay; background-size: cover; background-position: center; }
+.slide-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.6) 50%, rgba(100,15,15,.45) 100%); }
+.slide-diagonal { position: absolute; right: -5%; top: 0; width: 45%; height: 100%; background: rgba(139,26,26,0.18); clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%); border-left: 1px solid rgba(139,26,26,.4); }
+.slide-content { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: 0 48px; width: 100%; }
+.slide-tag { display: inline-block; font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--red); background: rgba(139,26,26,.15); border: 1px solid rgba(139,26,26,.4); padding: 6px 14px; border-radius: 1px; margin-bottom: 20px; opacity: 0; transform: translateY(20px); transition: opacity .6s .3s, transform .6s .3s; }
+.slide.active .slide-tag { opacity: 1; transform: translateY(0); }
+.slide-title { font-family: var(--font-title); font-size: clamp(38px, 6vw, 80px); font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: 2px; line-height: 1.0; max-width: 700px; margin-bottom: 16px; opacity: 0; transform: translateY(30px); transition: opacity .7s .5s, transform .7s .5s; }
+.slide.active .slide-title { opacity: 1; transform: translateY(0); }
+.slide-sub { font-family: var(--font-body); font-size: 17px; font-weight: 300; color: rgba(255,255,255,.75); max-width: 500px; margin-bottom: 36px; line-height: 1.5; opacity: 0; transform: translateY(20px); transition: opacity .6s .7s, transform .6s .7s; }
+.slide.active .slide-sub { opacity: 1; transform: translateY(0); }
+.slide-btns { display: flex; gap: 14px; flex-wrap: wrap; opacity: 0; transform: translateY(20px); transition: opacity .6s .9s, transform .6s .9s; }
+.slide.active .slide-btns { opacity: 1; transform: translateY(0); }
+.slider-controls { position: absolute; bottom: 32px; left: 0; right: 0; z-index: 10; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.4); cursor: pointer; transition: background .3s, transform .3s; border: none; }
+.dot.active { background: var(--red); transform: scale(1.4); }
+.slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 10; background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.2); color: var(--white); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 2px; font-size: 20px; transition: background .2s, border-color .2s; }
+.slider-arrow:hover { background: var(--red); border-color: var(--red); }
+.slider-arrow.prev { left: 24px; }
+.slider-arrow.next { right: 24px; }
+@media (max-width: 768px) { .slide-content { padding: 0 24px; } .slide-title { font-size: 36px; } }

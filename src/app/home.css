@@ -1,0 +1,81 @@
+/* ─── CTA CARDS ─── */
+#cta-cards { background: var(--black); padding: 80px 0; border-bottom: 1px solid rgba(139,26,26,.3); }
+.cta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.cta-card { padding: 52px 40px; background: var(--black2); border-top: 3px solid transparent; cursor: pointer; transition: background .25s, border-color .25s, transform .2s; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.cta-card:hover { background: #1e1e1e; border-top-color: var(--red); transform: translateY(-3px); }
+.cta-num { font-family: var(--font-title); font-size: 11px; letter-spacing: 3px; color: var(--red); text-transform: uppercase; }
+.cta-card h3 { font-family: var(--font-title); font-size: 26px; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: 1px; line-height: 1.1; }
+.cta-card p { font-family: var(--font-body); font-size: 14px; color: var(--text-gray); line-height: 1.65; font-weight: 300; }
+.cta-link-text { margin-top: auto; font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); transition: letter-spacing .2s; }
+.cta-card:hover .cta-link-text { letter-spacing: 2.5px; }
+
+/* ─── AVIS GOOGLE ─── */
+#reviews { background: var(--white); }
+.reviews-inner { display: grid; grid-template-columns: 280px 1fr; gap: 64px; align-items: start; }
+.reviews-score { position: sticky; top: 100px; padding: 40px; background: var(--black); border-radius: 2px; border-top: 4px solid var(--red); text-align: center; }
+.score-num { font-family: var(--font-title); font-size: 72px; font-weight: 700; color: var(--red); line-height: 1; }
+.score-stars { font-size: 22px; color: #f0b429; margin: 8px 0; letter-spacing: 2px; }
+.score-label { font-size: 12px; color: var(--text-gray); letter-spacing: 1px; text-transform: uppercase; }
+.score-count { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 6px; }
+.google-badge { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.08); font-size: 12px; color: var(--text-gray); }
+.google-g { width: 20px; height: 20px; background: linear-gradient(135deg, #4285f4 0%, #34a853 33%, #fbbc05 66%, #ea4335 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; }
+.reviews-list { display: flex; flex-direction: column; gap: 16px; }
+.review-card { background: var(--white); border: 1px solid #e8e8e8; border-left: 4px solid transparent; border-radius: 2px; padding: 24px; transition: border-color .2s, box-shadow .2s; }
+.review-card:hover { border-left-color: var(--red); box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+.review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.review-avatar { width: 42px; height: 42px; background: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-title); font-size: 16px; font-weight: 700; color: var(--white); flex-shrink: 0; }
+.review-meta { flex: 1; }
+.review-name { font-size: 14px; font-weight: 600; color: var(--black); }
+.review-stars { font-size: 12px; color: #f0b429; letter-spacing: 1px; }
+.review-date { font-size: 11px; color: #aaa; }
+.review-text { font-size: 14px; color: #444; line-height: 1.7; font-style: italic; font-weight: 300; }
+
+/* ─── STATS ─── */
+#stats { background: var(--red); padding: 60px 0; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat-item { text-align: center; padding: 0 24px; border-right: 1px solid rgba(255,255,255,.2); }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: var(--font-title); font-size: 54px; font-weight: 700; color: var(--white); line-height: 1; }
+.stat-label { font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.75); margin-top: 8px; }
+
+/* ─── ENGAGEMENTS ─── */
+#engagements { background: var(--black); }
+.eng-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,.04); }
+.eng-item { padding: 52px 36px; background: var(--black2); text-align: center; transition: background .2s; }
+.eng-item:hover { background: #1e1e1e; }
+.eng-icon { font-size: 32px; margin-bottom: 20px; }
+.eng-title { font-family: var(--font-title); font-size: 17px; font-weight: 600; color: var(--white); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.eng-text { font-size: 13px; color: var(--text-gray); line-height: 1.6; font-weight: 300; }
+
+/* ─── SERVICES HOME ─── */
+#services-home { background: var(--gray-light); }
+.services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.service-card { background: var(--white); border-left: 4px solid var(--red); padding: 36px 32px; transition: box-shadow .25s, transform .2s; }
+.service-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.1); transform: translateY(-2px); }
+.service-icon-num { font-family: var(--font-title); font-size: 11px; letter-spacing: 3px; color: var(--red); text-transform: uppercase; margin-bottom: 16px; }
+.service-card h3 { font-family: var(--font-title); font-size: 22px; font-weight: 700; color: var(--black); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 12px; line-height: 1.2; }
+.service-card p { font-size: 14px; color: #555; line-height: 1.7; font-weight: 300; }
+.service-features { margin-top: 16px; display: flex; flex-direction: column; gap: 6px; }
+.service-feature { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #444; }
+.service-feature::before { content: ''; width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+
+/* ─── CONTACT HOME ─── */
+#contact-home { background: var(--black2); }
+.contact-cta-wrap { text-align: center; }
+.contact-cta-text { font-size: 18px; color: var(--text-gray); margin-bottom: 28px; font-weight: 300; line-height: 1.6; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .cta-grid { grid-template-columns: 1fr; }
+  .eng-grid { grid-template-columns: repeat(2, 1fr); }
+  .reviews-inner { grid-template-columns: 1fr; }
+  .reviews-score { position: static; }
+  .services-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-item { padding: 20px; border-bottom: 1px solid rgba(255,255,255,.2); }
+}
+@media (max-width: 768px) {
+  .cta-card { padding: 36px 24px; }
+  .eng-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
