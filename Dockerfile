@@ -13,6 +13,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
+# Initialize database with demo data during build
+RUN npm run seed
+
 # --- Runner ---
 FROM base AS runner
 WORKDIR /app
@@ -27,12 +30,8 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy seed script and db deps for init
-COPY --from=builder /app/src/lib/seed.ts ./src/lib/seed.ts
-COPY --from=builder /app/node_modules/better-sqlite3 ./node_modules/better-sqlite3
-COPY --from=builder /app/node_modules/bindings ./node_modules/bindings || true
-COPY --from=builder /app/node_modules/file-uri-to-path ./node_modules/file-uri-to-path || true
-COPY --from=builder /app/node_modules/prebuild-install ./node_modules/prebuild-install || true
+# Copy generated database
+COPY --from=builder --chown=nextjs:nodejs /app/capauto.db ./capauto.db
 
 # Create uploads directory
 RUN mkdir -p /app/public/uploads/vehicles && \

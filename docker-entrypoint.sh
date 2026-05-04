@@ -1,11 +1,9 @@
 #!/bin/sh
 set -e
 
-# Initialize database if it doesn't exist
+# Initialize database if it doesn't exist in persistent volume
 if [ ! -f /app/data/capauto.db ]; then
-  echo "🗄️  Initialisation de la base de données..."
-  cd /app && npx tsx src/lib/seed.ts || echo "⚠️  Seed skipped (run manually if needed)"
-  # Move db to persistent volume
+  echo "🗄️  Initialisation de la base de données persistante..."
   if [ -f /app/capauto.db ]; then
     mv /app/capauto.db /app/data/capauto.db
   fi
