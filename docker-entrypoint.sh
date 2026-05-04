@@ -9,10 +9,5 @@ if [ ! -f /app/data/capauto.db ]; then
   fi
 fi
 
-# Symlink db from persistent volume
-if [ -f /app/data/capauto.db ] && [ ! -f /app/capauto.db ]; then
-  ln -sf /app/data/capauto.db /app/capauto.db
-fi
-
 echo "🚗 CAP'AUTO démarrage..."
 exec "$@"
