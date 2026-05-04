@@ -14,7 +14,7 @@ COPY . .
 RUN npm run build
 
 # Initialize database with demo data during build
-RUN npm run seed
+RUN mkdir -p data && npm run seed
 
 # --- Runner ---
 FROM base AS runner
@@ -30,15 +30,15 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy generated database
-COPY --from=builder --chown=nextjs:nodejs /app/capauto.db ./capauto.db
+# Create data directory for SQLite before copy
+RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
+
+# Copy generated database as a template for initial seed
+COPY --from=builder --chown=nextjs:nodejs /app/data/capauto.db ./capauto.db.template
 
 # Create uploads directory
 RUN mkdir -p /app/public/uploads/vehicles && \
     chown -R nextjs:nodejs /app/public/uploads
-
-# Create data directory for SQLite
-RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
 
 COPY --chmod=755 docker-entrypoint.sh ./
 RUN sed -i 's/\r$//' docker-entrypoint.sh
