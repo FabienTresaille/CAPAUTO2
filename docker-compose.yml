@@ -9,25 +9,19 @@ services:
       - capauto_data:/app/data
       - capauto_uploads:/app/public/uploads
     networks:
-      - web
+      - audit-app_web
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=audit-app_web"
       - "traefik.http.routers.capauto-maquette.rule=Host(`capauto-maquette.alsek.fr`)"
       - "traefik.http.routers.capauto-maquette.entrypoints=websecure"
       - "traefik.http.routers.capauto-maquette.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.capauto-maquette.service=capauto-maquette-svc"
-      - "traefik.http.services.capauto-maquette-svc.loadbalancer.server.port=3000"
-      - "traefik.http.routers.capauto-maquette-http.rule=Host(`capauto-maquette.alsek.fr`)"
-      - "traefik.http.routers.capauto-maquette-http.entrypoints=web"
-      - "traefik.http.routers.capauto-maquette-http.middlewares=capauto-maquette-redirect"
-      - "traefik.http.middlewares.capauto-maquette-redirect.redirectscheme.scheme=https"
+      - "traefik.http.services.capauto-maquette.loadbalancer.server.port=3000"
+      - "traefik.docker.network=audit-app_web"
 
 volumes:
   capauto_data:
   capauto_uploads:
 
 networks:
-  web:
+  audit-app_web:
     external: true
-    name: audit-app_web
