@@ -41,6 +41,7 @@ RUN mkdir -p /app/public/uploads/vehicles && \
 RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
 
 COPY --chmod=755 docker-entrypoint.sh ./
+RUN sed -i 's/\r$//' docker-entrypoint.sh
 
 USER nextjs
 EXPOSE 3000

@@ -12,10 +12,15 @@ services:
       - web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.capauto.rule=Host(`capauto.alsek.fr`)"
+      - "traefik.docker.network=audit-app_web"
+      - "traefik.http.routers.capauto.rule=Host(`capauto-maquette.alsek.fr`)"
       - "traefik.http.routers.capauto.entrypoints=websecure"
       - "traefik.http.routers.capauto.tls.certresolver=letsencrypt"
       - "traefik.http.services.capauto.loadbalancer.server.port=3000"
+      - "traefik.http.routers.capauto-http.rule=Host(`capauto-maquette.alsek.fr`)"
+      - "traefik.http.routers.capauto-http.entrypoints=web"
+      - "traefik.http.routers.capauto-http.middlewares=capauto-redirect"
+      - "traefik.http.middlewares.capauto-redirect.redirectscheme.scheme=https"
 
 volumes:
   capauto_data:
