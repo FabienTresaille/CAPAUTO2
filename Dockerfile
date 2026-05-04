@@ -34,7 +34,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
 
 # Copy generated database as a template for initial seed
-COPY --from=builder --chown=nextjs:nodejs /app/data/capauto.db ./capauto.db.template
+COPY --from=builder --chown=nextjs:nodejs /app/capauto.db ./capauto.db.template
 
 # Create uploads directory
 RUN mkdir -p /app/public/uploads/vehicles && \
