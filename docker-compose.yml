@@ -1,7 +1,7 @@
 services:
-  capauto:
+  capauto-maquette:
     build: .
-    container_name: capauto
+    container_name: capauto-maquette
     restart: unless-stopped
     env_file:
       - .env.local
@@ -13,14 +13,14 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=audit-app_web"
-      - "traefik.http.routers.capauto.rule=Host(`capauto-maquette.alsek.fr`)"
-      - "traefik.http.routers.capauto.entrypoints=websecure"
-      - "traefik.http.routers.capauto.tls.certresolver=letsencrypt"
-      - "traefik.http.services.capauto.loadbalancer.server.port=3000"
-      - "traefik.http.routers.capauto-http.rule=Host(`capauto-maquette.alsek.fr`)"
-      - "traefik.http.routers.capauto-http.entrypoints=web"
-      - "traefik.http.routers.capauto-http.middlewares=capauto-redirect"
-      - "traefik.http.middlewares.capauto-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.capauto-maquette.rule=Host(`capauto-maquette.alsek.fr`)"
+      - "traefik.http.routers.capauto-maquette.entrypoints=websecure"
+      - "traefik.http.routers.capauto-maquette.tls.certresolver=letsencrypt"
+      - "traefik.http.services.capauto-maquette.loadbalancer.server.port=3000"
+      - "traefik.http.routers.capauto-maquette-http.rule=Host(`capauto-maquette.alsek.fr`)"
+      - "traefik.http.routers.capauto-maquette-http.entrypoints=web"
+      - "traefik.http.routers.capauto-maquette-http.middlewares=capauto-maquette-redirect"
+      - "traefik.http.middlewares.capauto-maquette-redirect.redirectscheme.scheme=https"
 
 volumes:
   capauto_data:
