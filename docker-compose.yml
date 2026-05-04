@@ -1,0 +1,27 @@
+services:
+  capauto:
+    build: .
+    container_name: capauto
+    restart: unless-stopped
+    env_file:
+      - .env.local
+    volumes:
+      - capauto_data:/app/data
+      - capauto_uploads:/app/public/uploads
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.capauto.rule=Host(`capauto.alsek.fr`)"
+      - "traefik.http.routers.capauto.entrypoints=websecure"
+      - "traefik.http.routers.capauto.tls.certresolver=letsencrypt"
+      - "traefik.http.services.capauto.loadbalancer.server.port=3000"
+
+volumes:
+  capauto_data:
+  capauto_uploads:
+
+networks:
+  web:
+    external: true
+    name: audit-app_web

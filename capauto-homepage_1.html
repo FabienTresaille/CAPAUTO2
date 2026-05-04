@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAP'AUTO — Conseiller Automobile Privilégié</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & BASE ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #8B1A1A;
+  --red-hover: #A52020;
+  --red-light: rgba(139,26,26,0.12);
+  --black: #111111;
+  --black2: #1a1a1a;
+  --black3: #222222;
+  --gray: #2e2e2e;
+  --gray-light: #f5f5f5;
+  --white: #ffffff;
+  --text-gray: #bbbbbb;
+  --font-title: 'Oswald', sans-serif;
+  --font-body: 'Barlow', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--white); color: var(--black); overflow-x: hidden; }
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* ─── TYPOGRAPHY ─── */
+.section-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+  display: block;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-title);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  color: var(--black);
+}
+.section-title.white { color: var(--white); }
+.title-line {
+  display: inline-block;
+  width: 48px;
+  height: 3px;
+  background: var(--red);
+  margin: 14px 0 20px;
+  border-radius: 2px;
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+  border-radius: 2px;
+}
+.btn-red { background: var(--red); color: var(--white); }
+.btn-red:hover { background: var(--red-hover); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--white); border: 2px solid var(--white); }
+.btn-outline:hover { background: var(--white); color: var(--black); }
+.btn-outline-red { background: transparent; color: var(--red); border: 2px solid var(--red); }
+.btn-outline-red:hover { background: var(--red); color: var(--white); }
+.btn-dark { background: var(--black); color: var(--white); }
+.btn-dark:hover { background: var(--black3); }
+
+/* ─── HEADER ─── */
+#header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: var(--black);
+  border-bottom: 2px solid var(--red);
+  transition: box-shadow .3s;
+}
+#header.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,.5); }
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo {
+  font-family: var(--font-title);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 2px;
+}
+.logo span { color: var(--red); }
+.logo-sub {
+  font-family: var(--font-body);
+  font-size: 8px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-gray);
+  display: block;
+  margin-top: -2px;
+}
+nav { display: flex; align-items: center; gap: 6px; }
+nav a {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .5px;
+  color: var(--text-gray);
+  padding: 8px 14px;
+  border-radius: 2px;
+  transition: color .2s, background .2s;
+  text-transform: uppercase;
+}
+nav a:hover { color: var(--white); background: rgba(255,255,255,.06); }
+nav a.active { color: var(--white); }
+.nav-cta { background: var(--red) !important; color: var(--white) !important; padding: 9px 18px !important; margin-left: 8px; }
+.nav-cta:hover { background: var(--red-hover) !important; }
+.burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+.burger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: .3s; }
+
+/* ─── HERO SLIDER ─── */
+#hero {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+  margin-top: 72px;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .9s ease;
+  display: flex;
+  align-items: center;
+}
+.slide.active { opacity: 1; z-index: 1; }
+.slide-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.05);
+  transition: transform 8s ease;
+}
+.slide.active .slide-bg { transform: scale(1); }
+/* Slide backgrounds using gradients to simulate car images */
+.slide-1 .slide-bg { background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 40%, #2a0808 100%); background-image: url('https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1600&auto=format&fit=crop&q=80'), linear-gradient(135deg,#111,#2a0808); background-blend-mode: overlay; }
+.slide-2 .slide-bg { background-image: url('https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=1600&auto=format&fit=crop&q=80'), linear-gradient(135deg,#111,#2a0808); background-blend-mode: overlay; }
+.slide-3 .slide-bg { background-image: url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1600&auto=format&fit=crop&q=80'), linear-gradient(135deg,#111,#2a0808); background-blend-mode: overlay; }
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.6) 50%, rgba(100,15,15,.45) 100%);
+}
+/* Diagonal red accent */
+.slide-diagonal {
+  position: absolute;
+  right: -5%;
+  top: 0;
+  width: 45%;
+  height: 100%;
+  background: rgba(139,26,26,0.18);
+  clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%);
+  border-left: 1px solid rgba(139,26,26,.4);
+}
+.slide-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+  width: 100%;
+}
+.slide-tag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+  background: rgba(139,26,26,.15);
+  border: 1px solid rgba(139,26,26,.4);
+  padding: 6px 14px;
+  border-radius: 1px;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s .3s, transform .6s .3s;
+}
+.slide.active .slide-tag { opacity: 1; transform: translateY(0); }
+.slide-title {
+  font-family: var(--font-title);
+  font-size: clamp(38px, 6vw, 80px);
+  font-weight: 700;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.0;
+  max-width: 700px;
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .7s .5s, transform .7s .5s;
+}
+.slide.active .slide-title { opacity: 1; transform: translateY(0); }
+.slide-sub {
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 300;
+  color: rgba(255,255,255,.75);
+  max-width: 500px;
+  margin-bottom: 36px;
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s .7s, transform .6s .7s;
+}
+.slide.active .slide-sub { opacity: 1; transform: translateY(0); }
+.slide-btns {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s .9s, transform .6s .9s;
+}
+.slide.active .slide-btns { opacity: 1; transform: translateY(0); }
+
+/* Slider controls */
+.slider-controls {
+  position: absolute;
+  bottom: 32px;
+  left: 0; right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.4);
+  cursor: pointer;
+  transition: background .3s, transform .3s;
+  border: none;
+}
+.dot.active { background: var(--red); transform: scale(1.4); }
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(0,0,0,.5);
+  border: 1px solid rgba(255,255,255,.2);
+  color: var(--white);
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  border-radius: 2px;
+  font-size: 20px;
+  transition: background .2s, border-color .2s;
+}
+.slider-arrow:hover { background: var(--red); border-color: var(--red); }
+.slider-arrow.prev { left: 24px; }
+.slider-arrow.next { right: 24px; }
+
+/* ─── SECTION LAYOUT ─── */
+section { position: relative; }
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+.section-pad { padding: 96px 0; }
+.section-pad-sm { padding: 64px 0; }
+
+/* ─── 3 CTA CARDS ─── */
+#cta-cards {
+  background: var(--black);
+  padding: 80px 0;
+  border-bottom: 1px solid rgba(139,26,26,.3);
+}
+.cta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.cta-card {
+  padding: 52px 40px;
+  background: var(--black2);
+  border-top: 3px solid transparent;
+  cursor: pointer;
+  transition: background .25s, border-color .25s, transform .2s;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+.cta-card:hover { background: #1e1e1e; border-top-color: var(--red); transform: translateY(-3px); }
+.cta-icon {
+  width: 54px; height: 54px;
+  background: rgba(139,26,26,.15);
+  border: 1px solid rgba(139,26,26,.3);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.cta-icon svg { width: 26px; height: 26px; fill: var(--red); }
+.cta-num {
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-transform: uppercase;
+}
+.cta-card h3 {
+  font-family: var(--font-title);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.1;
+}
+.cta-card p {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-gray);
+  line-height: 1.65;
+  font-weight: 300;
+}
+.cta-link {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  transition: gap .2s;
+}
+.cta-link:hover { gap: 12px; }
+.cta-link svg { width: 14px; height: 14px; fill: var(--red); }
+
+/* ─── AVIS GOOGLE ─── */
+#reviews { background: var(--white); }
+.reviews-inner {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 64px;
+  align-items: start;
+}
+.reviews-score {
+  position: sticky;
+  top: 100px;
+  padding: 40px;
+  background: var(--black);
+  border-radius: 2px;
+  border-top: 4px solid var(--red);
+  text-align: center;
+}
+.score-num {
+  font-family: var(--font-title);
+  font-size: 72px;
+  font-weight: 700;
+  color: var(--red);
+  line-height: 1;
+  display: block;
+}
+.score-stars { font-size: 22px; color: #f0b429; margin: 8px 0; letter-spacing: 2px; }
+.score-label { font-size: 12px; color: var(--text-gray); letter-spacing: 1px; text-transform: uppercase; }
+.score-count { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 6px; }
+.google-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  font-size: 12px;
+  color: var(--text-gray);
+}
+.google-g {
+  width: 20px; height: 20px;
+  background: linear-gradient(135deg, #4285f4 0%, #34a853 33%, #fbbc05 66%, #ea4335 100%);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white;
+}
+.reviews-list { display: flex; flex-direction: column; gap: 16px; }
+.review-card {
+  background: var(--white);
+  border: 1px solid #e8e8e8;
+  border-left: 4px solid transparent;
+  border-radius: 2px;
+  padding: 24px;
+  transition: border-color .2s, box-shadow .2s;
+}
+.review-card:hover { border-left-color: var(--red); box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+.review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.review-avatar {
+  width: 42px; height: 42px;
+  background: var(--red);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--white);
+  flex-shrink: 0;
+}
+.review-meta { flex: 1; }
+.review-name { font-family: var(--font-body); font-size: 14px; font-weight: 600; color: var(--black); }
+.review-stars { font-size: 12px; color: #f0b429; letter-spacing: 1px; }
+.review-date { font-size: 11px; color: #aaa; }
+.review-text { font-size: 14px; color: #444; line-height: 1.7; font-style: italic; font-weight: 300; }
+
+/* ─── ENGAGEMENTS ─── */
+#engagements { background: var(--black); }
+.eng-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,.04);
+}
+.eng-item {
+  padding: 52px 36px;
+  background: var(--black2);
+  text-align: center;
+  position: relative;
+  transition: background .2s;
+}
+.eng-item:hover { background: #1e1e1e; }
+.eng-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 40px; height: 2px;
+  background: var(--red);
+  transition: transform .3s;
+}
+.eng-item:hover::after { transform: translateX(-50%) scaleX(1); }
+.eng-icon {
+  width: 60px; height: 60px;
+  margin: 0 auto 20px;
+  background: rgba(139,26,26,.12);
+  border: 1px solid rgba(139,26,26,.25);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.eng-icon svg { width: 28px; height: 28px; fill: var(--red); }
+.eng-title {
+  font-family: var(--font-title);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.eng-text { font-size: 13px; color: var(--text-gray); line-height: 1.6; font-weight: 300; }
+
+/* ─── SERVICES ─── */
+#services { background: var(--gray-light); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.service-card {
+  background: var(--white);
+  border-left: 4px solid var(--red);
+  padding: 36px 32px;
+  transition: box-shadow .25s, transform .2s;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 80px; height: 80px;
+  background: rgba(139,26,26,.04);
+  border-radius: 0 0 0 80px;
+  transition: width .3s, height .3s;
+}
+.service-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,.1); transform: translateY(-2px); }
+.service-card:hover::before { width: 120px; height: 120px; }
+.service-icon-num {
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.service-icon-num::after { content: ''; flex: 1; height: 1px; background: rgba(139,26,26,.2); }
+.service-card h3 {
+  font-family: var(--font-title);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--black);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+.service-card p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+  font-weight: 300;
+}
+.service-features {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.service-feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #444;
+}
+.service-feature::before { content: ''; width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+
+/* ─── CONFIANCE / TRUST ─── */
+#confiance {
+  background: var(--black);
+  padding: 80px 0;
+  overflow: hidden;
+}
+.confiance-header { text-align: center; margin-bottom: 56px; }
+.brands-track-wrap { overflow: hidden; position: relative; }
+.brands-track-wrap::before, .brands-track-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 100px;
+  z-index: 2;
+}
+.brands-track-wrap::before { left: 0; background: linear-gradient(to right, var(--black), transparent); }
+.brands-track-wrap::after { right: 0; background: linear-gradient(to left, var(--black), transparent); }
+.brands-track {
+  display: flex;
+  gap: 0;
+  animation: scroll-brands 22s linear infinite;
+}
+.brands-track:hover { animation-play-state: paused; }
+@keyframes scroll-brands {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.brand-item {
+  padding: 18px 48px;
+  border-right: 1px solid rgba(255,255,255,.06);
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.2);
+  white-space: nowrap;
+  transition: color .3s;
+  flex-shrink: 0;
+}
+.brand-item:hover { color: rgba(255,255,255,.6); }
+.temoignages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 56px;
+}
+.temoignage {
+  background: var(--black2);
+  border: 1px solid rgba(255,255,255,.06);
+  border-top: 3px solid var(--red);
+  padding: 28px;
+  transition: background .2s;
+}
+.temoignage:hover { background: #1e1e1e; }
+.temoignage-stars { color: #f0b429; font-size: 14px; letter-spacing: 1px; margin-bottom: 12px; }
+.temoignage-text { font-size: 14px; color: rgba(255,255,255,.65); line-height: 1.7; font-style: italic; font-weight: 300; margin-bottom: 16px; }
+.temoignage-author { display: flex; align-items: center; gap: 10px; }
+.temoignage-avatar {
+  width: 36px; height: 36px;
+  background: var(--red);
+  border-radius: 50%;
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.temoignage-name { font-size: 13px; font-weight: 600; color: var(--white); }
+.temoignage-location { font-size: 11px; color: var(--text-gray); }
+
+/* ─── STATS COUNTER ─── */
+#stats {
+  background: var(--red);
+  padding: 60px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat-item {
+  text-align: center;
+  padding: 0 24px;
+  border-right: 1px solid rgba(255,255,255,.2);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--font-title);
+  font-size: 54px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+  display: block;
+}
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.75);
+  margin-top: 8px;
+}
+
+/* ─── FORMULAIRE CONTACT RAPIDE ─── */
+#contact-quick { background: var(--black2); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.form-card {
+  background: var(--white);
+  padding: 44px;
+  border-top: 4px solid var(--red);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 7px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--black);
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 1px;
+  outline: none;
+  transition: border-color .2s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--red); background: var(--white); }
+.form-group textarea { height: 100px; resize: vertical; }
+.form-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.chip {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .5px;
+  padding: 6px 12px;
+  border: 1px solid var(--red);
+  color: var(--red);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.chip:hover { background: var(--red); color: var(--white); }
+.contact-info { color: var(--white); }
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.info-icon {
+  width: 44px; height: 44px;
+  background: rgba(139,26,26,.2);
+  border: 1px solid rgba(139,26,26,.3);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.info-icon svg { width: 20px; height: 20px; fill: var(--red); }
+.info-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-gray); }
+.info-value { font-size: 15px; color: var(--white); margin-top: 3px; font-weight: 400; }
+.hours-table { display: grid; grid-template-columns: auto 1fr; gap: 4px 20px; margin-top: 4px; }
+.hours-day { font-size: 13px; color: var(--text-gray); }
+.hours-time { font-size: 13px; color: var(--white); }
+
+/* ─── FOOTER ─── */
+#footer {
+  background: #0a0a0a;
+  border-top: 2px solid var(--red);
+  padding: 60px 0 24px;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 64px;
+  margin-bottom: 48px;
+}
+.footer-brand .logo { font-size: 28px; margin-bottom: 6px; }
+.footer-brand .logo-sub { margin-bottom: 16px; }
+.footer-desc { font-size: 14px; color: var(--text-gray); line-height: 1.7; font-weight: 300; max-width: 300px; }
+.footer-socials { display: flex; gap: 10px; margin-top: 20px; }
+.social-btn {
+  width: 38px; height: 38px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-gray);
+  font-size: 16px;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.social-btn:hover { background: var(--red); border-color: var(--red); color: var(--white); }
+.footer-col h4 {
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(139,26,26,.4);
+}
+.footer-col ul li {
+  margin-bottom: 10px;
+}
+.footer-col ul li a {
+  font-size: 13px;
+  color: var(--text-gray);
+  transition: color .2s, padding-left .2s;
+  display: block;
+  font-weight: 300;
+}
+.footer-col ul li a:hover { color: var(--red); padding-left: 6px; }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.3); }
+.footer-credits { font-size: 11px; color: rgba(255,255,255,.2); }
+
+/* ─── SCROLL REVEAL ─── */
+.reveal { opacity: 0; transform: translateY(32px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+.reveal-delay-4 { transition-delay: .4s; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .container { padding: 0 32px; }
+  .cta-grid { grid-template-columns: 1fr; }
+  .eng-grid { grid-template-columns: repeat(2, 1fr); }
+  .reviews-inner { grid-template-columns: 1fr; }
+  .reviews-score { position: static; }
+  .services-grid { grid-template-columns: 1fr; }
+  .temoignages { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0; }
+  .stat-item { padding: 20px; border-right: 1px solid rgba(255,255,255,.2); border-bottom: 1px solid rgba(255,255,255,.2); }
+}
+@media (max-width: 768px) {
+  nav { display: none; }
+  .burger { display: flex; }
+  .slide-content { padding: 0 24px; }
+  .slide-title { font-size: 36px; }
+  .container { padding: 0 20px; }
+  .section-pad { padding: 64px 0; }
+  .cta-card { padding: 36px 24px; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  .eng-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .temoignages { grid-template-columns: 1fr; }
+}
+
+/* Mobile nav */
+#mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+#mobile-nav.open { display: flex; }
+#mobile-nav a {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: 2px;
+  padding: 10px;
+  transition: color .2s;
+}
+#mobile-nav a:hover { color: var(--red); }
+#mobile-nav-close {
+  position: absolute;
+  top: 24px; right: 24px;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 28px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE NAV -->
+<div id="mobile-nav">
+  <button id="mobile-nav-close" onclick="toggleNav()">✕</button>
+  <a href="#" onclick="toggleNav()">Accueil</a>
+  <a href="#" onclick="toggleNav()">Notre stock</a>
+  <a href="#" onclick="toggleNav()">Recherche</a>
+  <a href="#" onclick="toggleNav()">Vendre</a>
+  <a href="#" onclick="toggleNav()">Services</a>
+  <a href="#" onclick="toggleNav()">Contact</a>
+</div>
+
+<!-- ═══ HEADER ═══ -->
+<header id="header">
+  <div class="header-inner">
+    <div class="logo">
+      CAP'AUT<span>O</span>
+      <span class="logo-sub">Conseiller Automobile Privilégié</span>
+    </div>
+    <nav>
+      <a href="#" class="active">Accueil</a>
+      <a href="#">Notre stock</a>
+      <a href="#">Recherche</a>
+      <a href="#">Vendre</a>
+      <a href="#">Services</a>
+      <a href="#contact-quick" class="nav-cta">Contact</a>
+    </nav>
+    <div class="burger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ HERO SLIDER ═══ -->
+<section id="hero">
+  <!-- Slide 1 -->
+  <div class="slide slide-1 active">
+    <div class="slide-bg"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-diagonal"></div>
+    <div class="slide-content">
+      <span class="slide-tag">Sélection Premium</span>
+      <h1 class="slide-title">Trouvez le véhicule de vos rêves</h1>
+      <p class="slide-sub">Des véhicules d'occasion soigneusement sélectionnés, inspectés et garantis pour votre tranquillité d'esprit.</p>
+      <div class="slide-btns">
+        <a href="#" class="btn btn-red">Voir le stock</a>
+        <a href="#" class="btn btn-outline">En savoir plus</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide slide-2">
+    <div class="slide-bg"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-diagonal"></div>
+    <div class="slide-content">
+      <span class="slide-tag">Qualité Certifiée</span>
+      <h1 class="slide-title">Qualité certifiée, prix maîtrisé</h1>
+      <p class="slide-sub">Chaque véhicule est rigoureusement inspecté avant mise en vente. Garantie incluse sur toutes nos annonces.</p>
+      <div class="slide-btns">
+        <a href="#" class="btn btn-red">Nos garanties</a>
+        <a href="#" class="btn btn-outline">Découvrir</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide slide-3">
+    <div class="slide-bg"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-diagonal"></div>
+    <div class="slide-content">
+      <span class="slide-tag">Livraison Domicile</span>
+      <h1 class="slide-title">Livraison à domicile partout en France</h1>
+      <p class="slide-sub">Votre prochain véhicule livré directement chez vous. Service disponible sur tout le territoire français.</p>
+      <div class="slide-btns">
+        <a href="#" class="btn btn-red">Nous contacter</a>
+        <a href="#" class="btn btn-outline">Recherche personnalisée</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arrows -->
+  <button class="slider-arrow prev" onclick="changeSlide(-1)">&#8249;</button>
+  <button class="slider-arrow next" onclick="changeSlide(1)">&#8250;</button>
+
+  <!-- Dots -->
+  <div class="slider-controls">
+    <button class="dot active" onclick="goSlide(0)"></button>
+    <button class="dot" onclick="goSlide(1)"></button>
+    <button class="dot" onclick="goSlide(2)"></button>
+  </div>
+</section>
+
+<!-- ═══ 3 CTA CARDS ═══ -->
+<section id="cta-cards">
+  <div class="container">
+    <div class="cta-grid">
+
+      <div class="cta-card reveal">
+        <span class="cta-num">01</span>
+        <div class="cta-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 8V7l-3 1V7l-3-1v2l-3 1V7l-3-1v2L3 7v1l3 1v2L3 9v1l3 1v2l-3-1v1l9 3 9-3v-1l-3 1v-2l3-1V9l-3 1V8l3-1zm-9 8.5l-6-2V11l6 2v3.5zm0-4.5l-6-2v-.5l6 2V12zm6 4.5l-6 2V11l6-2v3.5zm0-4.5l-6 2V12l6-2v.5z"/></svg>
+        </div>
+        <h3>J'achète</h3>
+        <p>Parcourez notre sélection de véhicules d'occasion soigneusement choisis et garantis pour rouler en toute sérénité.</p>
+        <a href="#" class="cta-link">
+          Voir le catalogue
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="cta-card reveal reveal-delay-2">
+        <span class="cta-num">02</span>
+        <div class="cta-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        </div>
+        <h3>Je vends</h3>
+        <p>Obtenez une estimation gratuite et vendez votre véhicule rapidement au meilleur prix. Paiement cash immédiat garanti.</p>
+        <a href="#" class="cta-link">
+          Estimer mon véhicule
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="cta-card reveal reveal-delay-4">
+        <span class="cta-num">03</span>
+        <div class="cta-icon">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        </div>
+        <h3>Je recherche</h3>
+        <p>Décrivez le véhicule idéal — marque, kilométrage, budget — et nous le trouvons pour vous. Réponse sous 24h.</p>
+        <a href="#" class="cta-link">
+          Recherche personnalisée
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AVIS GOOGLE ═══ -->
+<section id="reviews" class="section-pad">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:56px">
+      <span class="section-label">Avis clients</span>
+      <h2 class="section-title">Ce que disent nos clients</h2>
+      <div class="title-line"></div>
+    </div>
+    <div class="reviews-inner">
+      <div class="reviews-score reveal">
+        <span class="score-num">4.9</span>
+        <div class="score-stars">★★★★★</div>
+        <div class="score-label">Note moyenne</div>
+        <div class="score-count">Basé sur 87 avis</div>
+        <div class="google-badge">
+          <div class="google-g">G</div>
+          Google Reviews
+        </div>
+      </div>
+      <div class="reviews-list">
+        <div class="review-card reveal">
+          <div class="review-header">
+            <div class="review-avatar">TM</div>
+            <div class="review-meta">
+              <div class="review-name">Thomas M.</div>
+              <div class="review-stars">★★★★★</div>
+            </div>
+            <div class="review-date">Il y a 2 semaines</div>
+          </div>
+          <div class="review-text">"Excellente expérience chez Cap'Auto ! Voiture livrée en parfait état, exactement comme décrite. L'équipe est sérieuse, professionnelle et à l'écoute. Je recommande vivement."</div>
+        </div>
+        <div class="review-card reveal reveal-delay-1">
+          <div class="review-header">
+            <div class="review-avatar">SL</div>
+            <div class="review-meta">
+              <div class="review-name">Sophie L.</div>
+              <div class="review-stars">★★★★★</div>
+            </div>
+            <div class="review-date">Il y a 1 mois</div>
+          </div>
+          <div class="review-text">"Service impeccable de A à Z. J'ai vendu ma voiture rapidement et au prix du marché. Le paiement a été effectué immédiatement. Très satisfaite !"</div>
+        </div>
+        <div class="review-card reveal reveal-delay-2">
+          <div class="review-header">
+            <div class="review-avatar">KB</div>
+            <div class="review-meta">
+              <div class="review-name">Kevin B.</div>
+              <div class="review-stars">★★★★★</div>
+            </div>
+            <div class="review-date">Il y a 3 semaines</div>
+          </div>
+          <div class="review-text">"J'ai fait une recherche personnalisée pour un SUV diesel automatique. En moins de 48h, ils m'avaient trouvé exactement ce que je voulais dans mon budget. Bluffant !"</div>
+        </div>
+        <div class="review-card reveal reveal-delay-3">
+          <div class="review-header">
+            <div class="review-avatar">MR</div>
+            <div class="review-meta">
+              <div class="review-name">Marie R.</div>
+              <div class="review-stars">★★★★★</div>
+            </div>
+            <div class="review-date">Il y a 2 mois</div>
+          </div>
+          <div class="review-text">"La livraison à domicile est un vrai plus ! Mon véhicule est arrivé propre, avec le plein et tous les documents. Un grand merci à toute l'équipe Cap'Auto."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS ═══ -->
+<section id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <span class="stat-num" data-target="500">0</span>
+        <div class="stat-label">Véhicules vendus</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <span class="stat-num">4.9★</span>
+        <div class="stat-label">Note Google</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <span class="stat-num" data-target="100">0</span>
+        <div class="stat-label">% clients satisfaits</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <span class="stat-num">24h</span>
+        <div class="stat-label">Délai de réponse</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ENGAGEMENTS ═══ -->
+<section id="engagements" class="section-pad">
+  <div class="container">
+    <div class="reveal" style="text-align:center; margin-bottom:56px">
+      <span class="section-label" style="color:rgba(255,255,255,.5)">Pourquoi nous choisir</span>
+      <h2 class="section-title white">Nos engagements</h2>
+      <div class="title-line" style="margin:14px auto 0"></div>
+    </div>
+    <div class="eng-grid">
+      <div class="eng-item reveal">
+        <div class="eng-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.47-2.34 6.79-5 7.93-2.66-1.14-5-4.46-5-7.93V7.18L12 5z"/></svg>
+        </div>
+        <div class="eng-title">Garantie incluse</div>
+        <div class="eng-text">Tous nos véhicules sont vendus avec garantie. Roulez l'esprit tranquille dès le premier jour.</div>
+      </div>
+      <div class="eng-item reveal reveal-delay-1">
+        <div class="eng-icon">
+          <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+        </div>
+        <div class="eng-title">Financement</div>
+        <div class="eng-text">Des solutions de financement adaptées à votre budget. Nous vous accompagnons dans vos démarches.</div>
+      </div>
+      <div class="eng-item reveal reveal-delay-2">
+        <div class="eng-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <div class="eng-title">Contrôle qualité</div>
+        <div class="eng-text">Chaque véhicule est rigoureusement inspecté : contrôle technique, historique complet, état général.</div>
+      </div>
+      <div class="eng-item reveal reveal-delay-3">
+        <div class="eng-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+        </div>
+        <div class="eng-title">Livraison domicile</div>
+        <div class="eng-text">Votre véhicule livré directement chez vous, partout en France. Service disponible 7j/7.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<section id="services" class="section-pad">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:48px">
+      <span class="section-label">Ce que nous proposons</span>
+      <h2 class="section-title">Nos services</h2>
+      <div class="title-line"></div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon-num">Service 01</div>
+        <h3>Achat cash</h3>
+        <p>Vous souhaitez vendre votre véhicule rapidement ? Cap'Auto vous propose un rachat immédiat avec paiement cash garanti sous 48h.</p>
+        <div class="service-features">
+          <div class="service-feature">Estimation gratuite et sans engagement</div>
+          <div class="service-feature">Toutes marques et tous kilométrages acceptés</div>
+          <div class="service-feature">Paiement sécurisé et immédiat</div>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon-num">Service 02</div>
+        <h3>Vente de véhicules d'occasion</h3>
+        <p>Une large sélection de véhicules soigneusement choisis, inspectés et garantis. Des particuliers comme des professionnels nous font confiance.</p>
+        <div class="service-features">
+          <div class="service-feature">Véhicules garantis et contrôlés</div>
+          <div class="service-feature">Photos HD et fiches détaillées</div>
+          <div class="service-feature">Essai possible sur rendez-vous</div>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon-num">Service 03</div>
+        <h3>Sélection soignée</h3>
+        <p>Chaque annonce est vérifiée : historique, kilométrage, état mécanique et esthétique. Aucun véhicule ne rejoint notre stock sans validation complète.</p>
+        <div class="service-features">
+          <div class="service-feature">Contrôle technique à jour</div>
+          <div class="service-feature">Historique complet du véhicule</div>
+          <div class="service-feature">Inspection mécanique approfondie</div>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon-num">Service 04</div>
+        <h3>Livraison à domicile</h3>
+        <p>Votre futur véhicule vous est livré directement à l'adresse de votre choix, partout en France. Pratique, rapide et sécurisé.</p>
+        <div class="service-features">
+          <div class="service-feature">Disponible sur toute la France</div>
+          <div class="service-feature">Véhicule livré propre, avec le plein</div>
+          <div class="service-feature">Documents et remise des clés sur place</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ILS NOUS FONT CONFIANCE ═══ -->
+<section id="confiance">
+  <div class="container">
+    <div class="confiance-header reveal">
+      <span class="section-label" style="color:rgba(255,255,255,.5)">Références</span>
+      <h2 class="section-title white">Ils nous ont fait confiance</h2>
+      <div class="title-line" style="margin:14px auto 0"></div>
+    </div>
+  </div>
+
+  <div class="brands-track-wrap">
+    <div class="brands-track">
+      <div class="brand-item">Renault</div>
+      <div class="brand-item">Peugeot</div>
+      <div class="brand-item">Citroën</div>
+      <div class="brand-item">Volkswagen</div>
+      <div class="brand-item">BMW</div>
+      <div class="brand-item">Audi</div>
+      <div class="brand-item">Mercedes</div>
+      <div class="brand-item">Toyota</div>
+      <div class="brand-item">Ford</div>
+      <div class="brand-item">Opel</div>
+      <!-- Duplicate for infinite scroll -->
+      <div class="brand-item">Renault</div>
+      <div class="brand-item">Peugeot</div>
+      <div class="brand-item">Citroën</div>
+      <div class="brand-item">Volkswagen</div>
+      <div class="brand-item">BMW</div>
+      <div class="brand-item">Audi</div>
+      <div class="brand-item">Mercedes</div>
+      <div class="brand-item">Toyota</div>
+      <div class="brand-item">Ford</div>
+      <div class="brand-item">Opel</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="temoignages">
+      <div class="temoignage reveal">
+        <div class="temoignage-stars">★★★★★</div>
+        <div class="temoignage-text">"Cap'Auto a trouvé exactement le SUV que je cherchais depuis des mois. Service ultra-réactif, livraison parfaite. Je ne passerai plus jamais par un particulier."</div>
+        <div class="temoignage-author">
+          <div class="temoignage-avatar">JD</div>
+          <div>
+            <div class="temoignage-name">Jean-David F.</div>
+            <div class="temoignage-location">Lyon</div>
+          </div>
+        </div>
+      </div>
+      <div class="temoignage reveal reveal-delay-2">
+        <div class="temoignage-stars">★★★★★</div>
+        <div class="temoignage-text">"J'avais une vieille Clio que je ne savais pas comment vendre. Cap'Auto l'a rachetée cash en 2 jours, au bon prix. Merci pour la simplicité et la rapidité !"</div>
+        <div class="temoignage-author">
+          <div class="temoignage-avatar">AC</div>
+          <div>
+            <div class="temoignage-name">Amélie C.</div>
+            <div class="temoignage-location">Clermont-Ferrand</div>
+          </div>
+        </div>
+      </div>
+      <div class="temoignage reveal reveal-delay-4">
+        <div class="temoignage-stars">★★★★★</div>
+        <div class="temoignage-text">"La voiture a été livrée à domicile, propre et avec le plein. Tout était parfait, du premier contact jusqu'à la remise des clés. Une vraie belle expérience !"</div>
+        <div class="temoignage-author">
+          <div class="temoignage-avatar">NB</div>
+          <div>
+            <div class="temoignage-name">Nicolas B.</div>
+            <div class="temoignage-location">Saint-Étienne</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT RAPIDE ═══ -->
+<section id="contact-quick" class="section-pad">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:52px; text-align:center">
+      <span class="section-label" style="color:rgba(255,255,255,.5)">Parlons-en</span>
+      <h2 class="section-title white">Contactez-nous</h2>
+      <div class="title-line" style="margin:14px auto 0"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="form-card reveal">
+        <div class="form-chips">
+          <span class="chip" onclick="fillMsg('Bonjour, je souhaite acheter un véhicule cash.')">Achat cash</span>
+          <span class="chip" onclick="fillMsg('Bonjour, je souhaite visiter votre stock de véhicules.')">Visite du stock</span>
+          <span class="chip" onclick="fillMsg('Bonjour, je souhaite vendre mon véhicule.')">Vendre ma voiture</span>
+          <span class="chip" onclick="fillMsg('Bonjour, je recherche un véhicule précis.')">Recherche perso</span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nom complet</label>
+            <input type="text" placeholder="Jean Dupont">
+          </div>
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="tel" placeholder="06 00 00 00 00">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Adresse email</label>
+          <input type="email" placeholder="jean@email.fr">
+        </div>
+        <div class="form-group">
+          <label>Objet</label>
+          <select>
+            <option>Achat d'un véhicule</option>
+            <option>Vente de mon véhicule</option>
+            <option>Visite du stock</option>
+            <option>Demande de financement</option>
+            <option>Recherche personnalisée</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="msg-field" placeholder="Décrivez votre demande..."></textarea>
+        </div>
+        <button class="btn btn-red" style="width:100%; justify-content:center; font-size:13px">
+          Envoyer mon message →
+        </button>
+      </div>
+
+      <div class="contact-info reveal reveal-delay-2">
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+          <div>
+            <div class="info-label">Adresse</div>
+            <div class="info-value">Votre adresse, Ville (00000)</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></div>
+          <div>
+            <div class="info-label">Téléphone</div>
+            <div class="info-value"><a href="tel:+33600000000" style="color:inherit">06 00 00 00 00</a></div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+          <div>
+            <div class="info-label">Email</div>
+            <div class="info-value"><a href="mailto:contact@capauto.fr" style="color:inherit">contact@capauto.fr</a></div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg></div>
+          <div>
+            <div class="info-label">Horaires</div>
+            <div class="hours-table">
+              <span class="hours-day">Lun – Ven</span><span class="hours-time" style="color:var(--red)">09h – 18h</span>
+              <span class="hours-day">Samedi</span><span class="hours-time" style="color:var(--red)">09h – 12h</span>
+              <span class="hours-day">Dimanche</span><span class="hours-time">Fermé</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">CAP'AUT<span>O</span><span class="logo-sub">Conseiller Automobile Privilégié</span></div>
+        <p class="footer-desc">Spécialiste de la vente et du rachat de véhicules d'occasion. Sélection rigoureuse, garantie incluse, livraison à domicile partout en France.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn">f</a>
+          <a href="#" class="social-btn">in</a>
+          <a href="#" class="social-btn">&#9679;</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#">Accueil</a></li>
+          <li><a href="#">Notre stock</a></li>
+          <li><a href="#">Recherche personnalisée</a></li>
+          <li><a href="#">Vendre ma voiture</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Nos services</h4>
+        <ul>
+          <li><a href="#">Achat cash</a></li>
+          <li><a href="#">Vente de véhicules</a></li>
+          <li><a href="#">Sélection soignée</a></li>
+          <li><a href="#">Livraison domicile</a></li>
+          <li><a href="#">Financement</a></li>
+          <li><a href="#">Dépôt-vente</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 CAP'AUTO — Tous droits réservés</div>
+      <div class="footer-credits">Site réalisé par Agence iA — Marketing Digital</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+/* ─ HEADER scroll ─ */
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* ─ MOBILE NAV ─ */
+function toggleNav() {
+  document.getElementById('mobile-nav').classList.toggle('open');
+}
+
+/* ─ HERO SLIDER ─ */
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+let autoplay;
+
+function goSlide(n) {
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current = (n + slides.length) % slides.length;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+}
+function changeSlide(dir) {
+  goSlide(current + dir);
+  resetAutoplay();
+}
+function resetAutoplay() {
+  clearInterval(autoplay);
+  autoplay = setInterval(() => goSlide(current + 1), 6000);
+}
+resetAutoplay();
+
+/* ─ SCROLL REVEAL ─ */
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+
+/* ─ COUNTER ANIMATION ─ */
+function animateCounters() {
+  document.querySelectorAll('[data-target]').forEach(el => {
+    const target = +el.dataset.target;
+    const suffix = el.textContent.replace(/[0-9]/g,'').trim();
+    let count = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      count = Math.min(count + step, target);
+      el.textContent = Math.floor(count) + (target === 100 ? '%' : '+');
+      if (count >= target) clearInterval(timer);
+    }, 25);
+  });
+}
+const statsSection = document.getElementById('stats');
+const statsObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) { animateCounters(); statsObserver.disconnect(); }
+}, { threshold: 0.3 });
+statsObserver.observe(statsSection);
+
+/* ─ MESSAGE CHIPS ─ */
+function fillMsg(text) {
+  document.getElementById('msg-field').value = text;
+  document.getElementById('msg-field').focus();
+}
+</script>
+</body>
+</html>
