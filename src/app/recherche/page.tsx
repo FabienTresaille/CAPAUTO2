@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import VehicleCard from '@/components/VehicleCard';
 import './recherche.css';
 
-const MARQUES = ['Toutes','Audi','BMW','Citroën','Dacia','Ford','Mercedes','Opel','Peugeot','Renault','Seat','Toyota','Volkswagen'];
+const MARQUES = ['Toutes','Audi','BMW','Citroën','Dacia','Ford','Mercedes','Opel','Peugeot','Porsche','Renault','Seat','Toyota','Volkswagen'];
 const BOITES = ['Toutes','Manuelle','Automatique'];
 const KM_OPTIONS = [{ label: 'Tous', value: 0 },{ label: '< 20 000 km', value: 20000 },{ label: '< 50 000 km', value: 50000 },{ label: '< 100 000 km', value: 100000 },{ label: '< 150 000 km', value: 150000 }];
 
