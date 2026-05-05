@@ -49,6 +49,15 @@ function initDb(db: Database.Database) {
       created_at TEXT DEFAULT (datetime('now'))
     );
   `);
+
+  // Migrations auto — ignorées si colonnes déjà présentes
+  const existingCols = (db.prepare("PRAGMA table_info(vehicles)").all() as { name: string }[]).map(c => c.name);
+  if (!existingCols.includes('nb_portes')) {
+    db.exec("ALTER TABLE vehicles ADD COLUMN nb_portes INTEGER DEFAULT 5");
+  }
+  if (!existingCols.includes('nb_places')) {
+    db.exec("ALTER TABLE vehicles ADD COLUMN nb_places INTEGER DEFAULT 5");
+  }
 }
 
 /* ── Vehicle CRUD ── */
@@ -63,6 +72,8 @@ export interface Vehicle {
   carburant: string;
   couleur: string;
   puissance: string;
+  nb_portes: number;
+  nb_places: number;
   description: string;
   photos: string;
   lien_leboncoin: string;
@@ -83,7 +94,7 @@ export function getVehicleById(id: number): Vehicle | undefined {
   return getDb().prepare('SELECT * FROM vehicles WHERE id = ?').get(id) as Vehicle | undefined;
 }
 
-export function searchVehicles(filters: { marque?: string; boite?: string; kmMax?: number }): Vehicle[] {
+export function searchVehicles(filters: { marque?: string; boite?: string; kmMax?: number; nbPortes?: number; nbPlaces?: number }): Vehicle[] {
   let query = 'SELECT * FROM vehicles WHERE visible = 1';
   const params: (string | number)[] = [];
 
@@ -99,6 +110,14 @@ export function searchVehicles(filters: { marque?: string; boite?: string; kmMax
     query += ' AND kilometrage <= ?';
     params.push(filters.kmMax);
   }
+  if (filters.nbPortes) {
+    query += ' AND nb_portes = ?';
+    params.push(filters.nbPortes);
+  }
+  if (filters.nbPlaces) {
+    query += ' AND nb_places >= ?';
+    params.push(filters.nbPlaces);
+  }
 
   query += ' ORDER BY created_at DESC';
   return getDb().prepare(query).all(...params) as Vehicle[];
@@ -111,12 +130,13 @@ export function getDistinctMarques(): string[] {
 
 export function createVehicle(data: Omit<Vehicle, 'id' | 'created_at'>): number {
   const stmt = getDb().prepare(`
-    INSERT INTO vehicles (marque, modele, annee, kilometrage, prix, boite, carburant, couleur, puissance, description, photos, lien_leboncoin, featured, visible)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO vehicles (marque, modele, annee, kilometrage, prix, boite, carburant, couleur, puissance, nb_portes, nb_places, description, photos, lien_leboncoin, featured, visible)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   const result = stmt.run(
     data.marque, data.modele, data.annee, data.kilometrage, data.prix,
     data.boite, data.carburant, data.couleur, data.puissance,
+    data.nb_portes ?? 5, data.nb_places ?? 5,
     data.description, data.photos, data.lien_leboncoin,
     data.featured, data.visible
   );

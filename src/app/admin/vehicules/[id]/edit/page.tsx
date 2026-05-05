@@ -76,6 +76,10 @@ export default function EditVehiclePage() {
               <div className="vf-field"><label>Carburant</label><select value={form.carburant} onChange={e => setForm({...form, carburant: e.target.value})}>{CARBURANTS.map(c => <option key={c}>{c}</option>)}</select></div>
             </div>
             <div className="vf-row">
+              <div className="vf-field"><label>Nb portes</label><select value={form.nb_portes ?? 5} onChange={e => setForm({...form, nb_portes: +e.target.value})}><option value={2}>2 portes</option><option value={3}>3 portes</option><option value={4}>4 portes</option><option value={5}>5 portes</option></select></div>
+              <div className="vf-field"><label>Nb places</label><select value={form.nb_places ?? 5} onChange={e => setForm({...form, nb_places: +e.target.value})}><option value={2}>2 places</option><option value={3}>3 places</option><option value={4}>4 places</option><option value={5}>5 places</option><option value={7}>7 places</option><option value={8}>8 places</option><option value={9}>9 places</option></select></div>
+            </div>
+            <div className="vf-row">
               <div className="vf-field"><label>Couleur</label><input value={form.couleur} onChange={e => setForm({...form, couleur: e.target.value})} /></div>
               <div className="vf-field"><label>Puissance</label><input value={form.puissance} onChange={e => setForm({...form, puissance: e.target.value})} /></div>
             </div>

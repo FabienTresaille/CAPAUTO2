@@ -8,9 +8,11 @@ export async function GET(req: NextRequest) {
   const marque = searchParams.get('marque') || undefined;
   const boite = searchParams.get('boite') || undefined;
   const kmMax = searchParams.get('kmMax') ? parseInt(searchParams.get('kmMax')!) : undefined;
+  const nbPortes = searchParams.get('nbPortes') ? parseInt(searchParams.get('nbPortes')!) : undefined;
+  const nbPlaces = searchParams.get('nbPlaces') ? parseInt(searchParams.get('nbPlaces')!) : undefined;
 
-  if (marque || boite || kmMax) {
-    const vehicles = searchVehicles({ marque, boite, kmMax });
+  if (marque || boite || kmMax || nbPortes || nbPlaces) {
+    const vehicles = searchVehicles({ marque, boite, kmMax, nbPortes, nbPlaces });
     return NextResponse.json(vehicles);
   }
 

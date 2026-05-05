@@ -9,7 +9,7 @@ const CARBURANTS = ['Essence','Diesel','Hybride','Électrique','GPL'];
 export default function NewVehiclePage() {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
-  const [form, setForm] = useState({ marque:'Peugeot', modele:'', annee: new Date().getFullYear(), kilometrage:0, prix:0, boite:'Manuelle', carburant:'Essence', couleur:'', puissance:'', description:'', lien_leboncoin:'', featured:0 });
+  const [form, setForm] = useState({ marque:'Peugeot', modele:'', annee: new Date().getFullYear(), kilometrage:0, prix:0, boite:'Manuelle', carburant:'Essence', couleur:'', puissance:'', nb_portes:5, nb_places:5, description:'', lien_leboncoin:'', featured:0 });
   const [photos, setPhotos] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
@@ -63,6 +63,10 @@ export default function NewVehiclePage() {
             <div className="vf-row">
               <div className="vf-field"><label>Boîte</label><select value={form.boite} onChange={e => setForm({...form, boite: e.target.value})}><option>Manuelle</option><option>Automatique</option></select></div>
               <div className="vf-field"><label>Carburant</label><select value={form.carburant} onChange={e => setForm({...form, carburant: e.target.value})}>{CARBURANTS.map(c => <option key={c}>{c}</option>)}</select></div>
+            </div>
+            <div className="vf-row">
+              <div className="vf-field"><label>Nb portes</label><select value={form.nb_portes} onChange={e => setForm({...form, nb_portes: +e.target.value})}><option value={2}>2 portes</option><option value={3}>3 portes</option><option value={4}>4 portes</option><option value={5}>5 portes</option></select></div>
+              <div className="vf-field"><label>Nb places</label><select value={form.nb_places} onChange={e => setForm({...form, nb_places: +e.target.value})}><option value={2}>2 places</option><option value={3}>3 places</option><option value={4}>4 places</option><option value={5}>5 places</option><option value={7}>7 places</option><option value={8}>8 places</option><option value={9}>9 places</option></select></div>
             </div>
             <div className="vf-row">
               <div className="vf-field"><label>Couleur</label><input value={form.couleur} onChange={e => setForm({...form, couleur: e.target.value})} placeholder="Noir Perla" /></div>
